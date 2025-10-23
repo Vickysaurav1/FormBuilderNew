@@ -14,15 +14,47 @@ export const FormBuilder = ({ schema, initialData = {} as IFormData }: FormBuild
   const [formData, setFormData] = useState<IFormData>(initialData)
   const [validation, setValidation] = useState<ValidationResult>({ isValid: true, errors: {} })
 
-  const handleSubmit = useCallback((e: React.FormEvent) => {
-    e.preventDefault()
+  const validateFormData = useCallback(() => {
     const validationResult = validateForm(formData, schema)
     setValidation(validationResult)
-
-    if (validationResult.isValid && schema.onSubmit) {
-      schema.onSubmit(formData)
-    }
+    return validationResult
   }, [formData, schema])
+
+  const handleSubmit = useCallback((e: React.FormEvent) => {
+    e.preventDefault()
+    
+    const validationResult = validateFormData()
+    
+    // Check validation result and perform required field validation
+    if (validationResult.isValid) {
+      const requiredFieldErrors = schema.fields.reduce<Record<string, string>>((errors, field) => {
+        if (field.validation?.required) {
+          const value = formData[field.id]
+          if (
+            value === undefined || 
+            value === null || 
+            value === '' || 
+            (typeof value === 'string' && value.trim() === '')
+          ) {
+            errors[field.id] = `${field.label} is required`
+          }
+        }
+        return errors
+      }, {})
+
+      // Update validation state with any required field errors
+      if (Object.keys(requiredFieldErrors).length > 0) {
+        setValidation({
+          isValid: false,
+          errors: { ...validationResult.errors, ...requiredFieldErrors }
+        })
+        return
+      }
+
+      // If we get here, validation passed and we can submit
+      schema.onSubmit?.(formData)
+    }
+  }, [formData, schema, validateFormData])
 
   const handleFieldChange = useCallback((fieldId: string, value: FormValue) => {
     setFormData(prev => ({ ...prev, [fieldId]: value }))

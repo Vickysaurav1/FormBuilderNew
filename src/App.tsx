@@ -15,7 +15,18 @@ const App = () => {
         const data = await fetchFormSchema()
         setSchema({
           ...data,
+          fields: data.fields.map(field => ({
+            ...field,
+            validation: {
+              ...field.validation,
+              required: field.id === 'name' ? true : field.validation?.required
+            }
+          })),
           onSubmit: (formData) => {
+            if (!formData.name || (typeof formData.name === 'string' && formData.name.trim() === '')) {
+              alert('Name is required!')
+              return
+            }
             console.log('Form submitted:', formData)
             alert('Form submitted successfully!')
           }

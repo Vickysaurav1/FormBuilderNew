@@ -5,8 +5,15 @@ export const validateField = (value: FormValue, field: FormField): string | null
   const { validation } = field
   if (!validation) return null
 
-  if (validation.required && !value) {
-    return `${field.label} is required`
+  // Handle required field validation
+  if (validation.required) {
+    if (value === undefined || value === null || value === '') {
+      return `${field.label} is required`
+    }
+    // Additional check for string type
+    if (typeof value === 'string' && value.trim() === '') {
+      return `${field.label} is required`
+    }
   }
 
   if (typeof value === 'string') {
