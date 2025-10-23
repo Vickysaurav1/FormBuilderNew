@@ -6,9 +6,16 @@ export const fetchFormSchema = async (): Promise<FormSchema> => {
   try {
     const response = await fetch(API_URL)
     if (!response.ok) {
-      throw new Error('Failed to fetch form schema')
+      throw new Error(`Failed to fetch form schema: ${response.statusText}`)
     }
-    return await response.json()
+    const data = await response.json()
+    
+    // Validate schema structure
+    if (!Array.isArray(data.fields)) {
+      throw new Error('Invalid schema format: missing fields array')
+    }
+    
+    return data
   } catch (error) {
     console.error('Error fetching form schema:', error)
     // Fallback to default schema if API fails

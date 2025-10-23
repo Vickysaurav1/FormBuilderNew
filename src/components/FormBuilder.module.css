@@ -5,8 +5,8 @@
 .submitButton {
   width: 100%;
   padding: 0.75rem 1.25rem;
-  background-color: #3b82f6;
-  color: white;
+  background-color: var(--color-primary);
+  color: var(--color-white);
   border: none;
   border-radius: 6px;
   font-size: 0.95rem;
@@ -17,7 +17,7 @@
 }
 
 .submitButton:hover {
-  background-color: #2563eb;
+  background-color: var(--color-primary-dark);
   transform: translateY(-1px);
 }
 
@@ -26,7 +26,7 @@
 }
 
 .submitButton:disabled {
-  background-color: #93c5fd;
+  background-color: var(--color-primary-light);
   cursor: not-allowed;
   transform: none;
 }
@@ -34,4 +34,37 @@
 .submitButton:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.resetButton {
+  flex: 1;
+  padding: 0.75rem 1.25rem;
+  background-color: var(--color-gray-200);
+  color: var(--color-gray-700);
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.resetButton:hover {
+  background-color: var(--color-gray-300);
+  transform: translateY(-1px);
+}
+
+.resetButton:active {
+  transform: translateY(0);
+}
+
+.resetButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.3);
 }

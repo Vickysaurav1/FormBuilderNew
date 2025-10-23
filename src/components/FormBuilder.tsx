@@ -80,12 +80,24 @@ export const FormBuilder = ({ schema, initialData = {} as IFormData }: FormBuild
           />
         )
       ))}
-      <button
-        type="submit"
-        className={styles.submitButton}
-      >
-        Submit
-      </button>
+      <div className={styles.buttonGroup}>
+        <button
+          type="button"
+          onClick={() => {
+            setFormData({})
+            setValidation({ isValid: true, errors: {} })
+          }}
+          className={styles.resetButton}
+        >
+          Reset
+        </button>
+        <button
+          type="submit"
+          className={styles.submitButton}
+        >
+          Submit
+        </button>
+      </div>
     </form>
   )
 }

@@ -46,7 +46,11 @@ const App = () => {
     return (
       <div className={styles.container}>
         <div className={styles.content}>
-          <h1 className={styles.title}>Loading form...</h1>
+          <h1 className={styles.title}>Loading Form Builder</h1>
+          <div className={styles.loadingSpinner}>
+            <div className={styles.spinner}></div>
+          </div>
+          <p className={styles.loadingText}>Fetching form configuration...</p>
         </div>
       </div>
     )
